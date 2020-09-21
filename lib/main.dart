@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_listview_json/entities/note.dart';
+import 'package:splashscreen/splashscreen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,7 +17,31 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: HomePage(),
+      home: Splash2(),
+    );
+  }
+}
+
+class Splash2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return new SplashScreen(
+      seconds: 1,
+      navigateAfterSeconds: new HomePage(),
+      title: new Text(
+        'Waaneiza Holistic Health\n ',
+        textScaleFactor: 2,
+        style: new TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 15.0,
+          color: Colors.green,
+        ),
+      ),
+      loadingText: Text(""),
+      image: new Image.asset('images/fm_logo_png.png'),
+      backgroundColor: Colors.white,
+      photoSize: 150.0,
+      loaderColor: Colors.green,
     );
   }
 }
@@ -31,7 +56,9 @@ class _HomePageState extends State<HomePage> {
   List<Note> _notesForDisplay = List<Note>();
 
   Future<List<Note>> fetchNotes() async {
-    var url = 'http://www.json-generator.com/api/json/get/cuhoZjqusy?indent=2';
+    var url =
+        'http://www.json-generator.com/api/json/get/cfhBFKjFTS?indent=2'; // (sway)
+    //var url=http://www.json-generator.com/api/json/get/cgoJtSmLkO?indent=2//(Word)
     var response = await http.get(url);
 
     var notes = List<Note>();
@@ -59,13 +86,14 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('Waaneiza FM Store')),
-        body: ListView.builder(
-          itemBuilder: (context, index) {
-            return index == 0 ? _searchBar() : _listItem(index - 1);
-          },
-          itemCount: _notesForDisplay.length + 1,
-        ));
+      appBar: AppBar(title: Text('Waaneiza FM Stores')),
+      body: ListView.builder(
+        itemBuilder: (context, index) {
+          return index == 0 ? _searchBar() : _listItem(index - 1);
+        },
+        itemCount: _notesForDisplay.length + 1,
+      ),
+    );
   }
 
   _searchBar() {
@@ -104,6 +132,7 @@ class _HomePageState extends State<HomePage> {
             //   _notesForDisplay[index].title,
             //   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             // ),
+            Text(' \ '),
             Image.asset(_notesForDisplay[index].text, height: 300, width: 350),
           ],
         ),
