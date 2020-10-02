@@ -2,64 +2,24 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_listview_json/entities/note.dart';
-import 'package:flutter_listview_json/pages/bottom_nav.dart';
-import 'package:splashscreen/splashscreen.dart';
+import 'package:flutter_listview_json/main.dart';
+
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
 
-void main() => runApp(App());
-
-class App extends StatelessWidget {
+class BottomNav extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Functional Medicine',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: Splash2(),
-    );
-  }
+  _BottomNavState createState() => _BottomNavState();
 }
 
-class Splash2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new SplashScreen(
-      seconds: 1,
-      navigateAfterSeconds: new HomePage(),
-      title: new Text(
-        'Waaneiza Holistic Health\n ',
-        textScaleFactor: 2,
-        style: new TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 15.0,
-          color: Colors.green,
-        ),
-      ),
-      loadingText: Text(""),
-      image: new Image.asset('images/fm_logo_png.png'),
-      backgroundColor: Colors.white,
-      photoSize: 150.0,
-      loaderColor: Colors.green,
-    );
-  }
-}
-
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
+class _BottomNavState extends State<BottomNav> {
   List<Note> _notes = List<Note>();
   List<Note> _notesForDisplay = List<Note>();
 
   Future<List<Note>> fetchNotes() async {
-    var url =
-        'https://next.json-generator.com/api/json/get/NyqwLlQrK'; // (sway)
-    //var url=http://www.json-generator.com/api/json/get/cgoJtSmLkO?indent=2//(Word)
+    // var url =
+    //     'http://www.json-generator.com/api/json/get/cfhBFKjFTS?indent=2'; // (sway)
+    var url = 'https://next.json-generator.com/api/json/get/EJJfFgQSt'; //(Word)
     var response = await http.get(url);
 
     var notes = List<Note>();
@@ -95,9 +55,9 @@ class _HomePageState extends State<HomePage> {
               child: GestureDetector(
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BottomNav()));
+                        MaterialPageRoute(builder: (context) => HomePage()));
                   },
-                  child: Text('Word', style: TextStyle(fontSize: 20))))
+                  child: Text('Sway', style: TextStyle(fontSize: 20))))
         ],
       ),
       body: ListView.builder(
@@ -146,7 +106,13 @@ class _HomePageState extends State<HomePage> {
             //   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             // ),
             Text(' \ '),
-            Image.asset(_notesForDisplay[index].text, height: 300, width: 350),
+
+            // Image.network("https://picsum.photos/250?image=9"),
+            Image.asset(
+              _notesForDisplay[index].text,
+              height: 300,
+              width: 350,
+            ),
           ],
         ),
       ),
