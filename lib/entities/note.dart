@@ -1,12 +1,14 @@
 class Note {
   String title;
-  String text;
+  String imageLink;
   String url;
-  Note(this.title, this.text);
+  String summary;
+  Note(this.title, this.imageLink, this.summary, this.url);
 
   Note.fromJson(Map<String, dynamic> json) {
     title = json['title'];
-    text = json['text'];
+    imageLink = json['image'];
     url = json['link'];
+    summary = json['summary'];
   }
 }

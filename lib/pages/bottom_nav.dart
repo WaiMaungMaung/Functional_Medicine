@@ -19,7 +19,8 @@ class _BottomNavState extends State<BottomNav> {
   Future<List<Note>> fetchNotes() async {
     // var url =
     //     'http://www.json-generator.com/api/json/get/cfhBFKjFTS?indent=2'; // (sway)
-    var url = 'https://next.json-generator.com/api/json/get/EJJfFgQSt'; //(Word)
+    // var url = 'https://next.json-generator.com/api/json/get/EJJfFgQSt'; //(Word)
+    var url = 'https://next.json-generator.com/api/json/get/EJLFJ4NUt';
     var response = await http.get(url);
 
     var notes = List<Note>();
@@ -54,8 +55,7 @@ class _BottomNavState extends State<BottomNav> {
               padding: EdgeInsets.only(right: 20.0, top: 20.0),
               child: GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomePage()));
+                    Navigator.pop(context);
                   },
                   child: Text('Sway', style: TextStyle(fontSize: 20))))
         ],
@@ -107,12 +107,13 @@ class _BottomNavState extends State<BottomNav> {
             // ),
             Text(' \ '),
 
-            // Image.network("https://picsum.photos/250?image=9"),
-            Image.asset(
-              _notesForDisplay[index].text,
-              height: 300,
-              width: 350,
-            ),
+            // // Image.network("https://picsum.photos/250?image=9"),
+            // Image.asset(
+            //   _notesForDisplay[index].imageLink,
+            //   height: 300,
+            //   width: 350,
+            // ),
+            Image.network(_notesForDisplay[index].imageLink),
           ],
         ),
       ),

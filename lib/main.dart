@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_listview_json/entities/note.dart';
 import 'package:flutter_listview_json/pages/bottom_nav.dart';
+import 'package:flutter_listview_json/pages/login.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -28,7 +30,7 @@ class Splash2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return new SplashScreen(
       seconds: 1,
-      navigateAfterSeconds: new HomePage(),
+      navigateAfterSeconds: new LoginScreen(),
       title: new Text(
         'Waaneiza Holistic Health\n ',
         textScaleFactor: 2,
@@ -48,6 +50,10 @@ class Splash2 extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
+  final User user;
+
+  const HomePage({this.user});
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -58,7 +64,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Note>> fetchNotes() async {
     var url =
-        'https://next.json-generator.com/api/json/get/NyqwLlQrK'; // (sway)
+        'https://next.json-generator.com/api/json/get/EJLFJ4NUt'; // (sway)
     //var url=http://www.json-generator.com/api/json/get/cgoJtSmLkO?indent=2//(Word)
     var response = await http.get(url);
 
@@ -87,17 +93,23 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Waaneiza FM Stores'),
         actions: [
           Padding(
-              padding: EdgeInsets.only(right: 20.0, top: 20.0),
-              child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => BottomNav()));
-                  },
-                  child: Text('Word', style: TextStyle(fontSize: 20))))
+            padding: EdgeInsets.only(right: 20.0, top: 20.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BottomNav()));
+              },
+              child: Text(
+                widget.user.email.split("@")[0],
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
         ],
       ),
       body: ListView.builder(
@@ -146,7 +158,31 @@ class _HomePageState extends State<HomePage> {
             //   style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
             // ),
             Text(' \ '),
-            Image.asset(_notesForDisplay[index].text, height: 300, width: 350),
+            Text(' \ '),
+
+            // Image.asset(_notesForDisplay[index].text, height: 300, width: 350),
+            Image(
+              image: NetworkImage(_notesForDisplay[index].imageLink),
+              height: 300,
+              width: 350,
+            ),
+            RaisedButton(
+              child: Text(
+                'Product Summary',
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            WebViewLoadUI(_notesForDisplay[index].summary)));
+              },
+              color: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+              ),
+            ),
           ],
         ),
       ),
@@ -160,10 +196,8 @@ class _HomePageState extends State<HomePage> {
 // }
 
 class WebViewLoadUI extends StatelessWidget {
-  String url;
-  WebViewLoadUI(url) {
-    this.url = url;
-  }
+  final url;
+  WebViewLoadUI(this.url);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
