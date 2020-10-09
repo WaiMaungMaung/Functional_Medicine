@@ -1,15 +1,22 @@
 import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_listview_json/entities/note.dart';
+import 'package:flutter_listview_json/pages/authServices.dart';
 import 'package:flutter_listview_json/pages/bottom_nav.dart';
 import 'package:flutter_listview_json/pages/login.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'package:rflutter_alert/rflutter_alert.dart';
 
-void main() => runApp(App());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   @override
@@ -20,7 +27,7 @@ class App extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: Splash2(),
+      home: AuthService().handleAuth(),
     );
   }
 }
@@ -30,7 +37,7 @@ class Splash2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return new SplashScreen(
       seconds: 1,
-      navigateAfterSeconds: new LoginScreen(),
+      navigateAfterSeconds: AuthService().handleAuth(),
       title: new Text(
         'Waaneiza Holistic Health\n ',
         textScaleFactor: 2,
@@ -101,11 +108,40 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(right: 20.0, top: 20.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BottomNav()));
+                Alert(
+                  context: context,
+                  type: AlertType.warning,
+                  title: "Log Out",
+                  desc: "Are you sure to Log Out",
+                  buttons: [
+                    DialogButton(
+                      child: Text(
+                        "Ok",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () {
+                        AuthService().signOut();
+                        Navigator.pop(context);
+                      },
+                      color: Colors.green,
+                    ),
+                    DialogButton(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      gradient: LinearGradient(colors: [
+                        Color.fromRGBO(116, 116, 191, 1.0),
+                        Color.fromRGBO(52, 138, 199, 1.0)
+                      ]),
+                    )
+                  ],
+                ).show();
               },
               child: Text(
-                widget.user.email.split("@")[0],
+                "Sign out",
+                // widget.user.email.split("@")[0],
                 style: TextStyle(fontSize: 20),
               ),
             ),
@@ -189,11 +225,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-// navigateToAdrenalOptimizer(context) async {
-//   Navigator.push(
-//       context, MaterialPageRoute(builder: (context) => WebViewLoadUI()));
-// }
 
 class WebViewLoadUI extends StatelessWidget {
   final url;

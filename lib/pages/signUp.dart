@@ -1,58 +1,52 @@
 import 'dart:async';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_listview_json/main.dart';
 import 'package:flutter_listview_json/pages/authServices.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
-
-import 'package:flutter_listview_json/pages/signUp.dart';
-
+import 'package:flutter_listview_json/pages/bottom_nav.dart';
+import 'package:flutter_listview_json/pages/login.dart';
+import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_core/firebase_core.dart';
 
-class LoginScreen extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   static const routeName = '/';
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _SignUpScreenState createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  String _email, _password, verificationid;
+class _SignUpScreenState extends State<SignUpScreen> {
+  String _email, _password;
   String error = '';
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  void initState() {
-    super.initState();
-    Firebase.initializeApp().whenComplete(() {
-      print("completed");
-      setState(() {});
-    });
-  }
-
-  Future<void> signIn() async {
+  Future<void> signUp() async {
     final formState = _formKey.currentState;
     if (formState.validate()) {
       formState.save();
 
       try {
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: _email, password: _password);
-        User user = FirebaseAuth.instance.currentUser;
-      } catch (e) {
+        await auth.FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: _email, password: _password);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) {
+          return AuthService().handleAuth();
+        }));
+      } on auth.FirebaseAuthException catch (e) {
         print(e.code);
         setState(() {
-          if (e.code == "user-not-found")
-            error = "User not found";
-          else if (e.code == "wrong-password") {
-            error = "Incorrect Password";
-          } else if (e.code == "invalid-email") {
-            error = "Invaild Email";
-          } else if (e.code == "too-many-requests") {
-            error = "You try too many times plz try again later";
-          } else if (e.code == "user-disabled") {
-            error = "Accound is disabled";
+          if (e.code == 'invalid-email') {
+            error = "Please type the correct email";
+          } else if (e.code == 'email-already-in-use') {
+            error = "The account already exists for that email";
+          } else if (e.code == 'weak-password') {
+            error = "The password provided is too weak";
+          } else {
+            error = "";
           }
         });
+      } catch (e) {
+        print(e);
       }
     }
   }
@@ -62,28 +56,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        actions: [
-          Padding(
-            padding: EdgeInsets.only(right: 20.0, top: 20.0),
-            child: GestureDetector(
-              child: Text(
-                "Sign Up",
-                // widget.user.email.split("@")[0],
-                style: TextStyle(
-                  fontSize: 15,
-                ),
-              ),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUpScreen()));
-              },
-            ),
-          ),
-        ],
         backgroundColor: Colors.green,
         title: Center(
           child: Text(
-            "Waaneiza Holistic Health ",
+            "Waaneiza Holistic Health",
             style: TextStyle(color: Colors.white),
           ),
         ),
@@ -151,43 +127,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: Text(
-                          "LOG IN",
+                          "Sign Up",
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
                       color: Colors.green,
-                      onPressed: () => signIn(),
+                      onPressed: () => signUp(),
                     ),
 
-                    SizedBox(
-                      height: 20,
-                    ),
-
-                    SignInButton(
-                      Buttons.FacebookNew,
-                      padding: EdgeInsets.all(20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      text: "Sign Up with Facebook",
-                      onPressed: () async {
-                        AuthService().signInWithFacebook();
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SignInButton(
-                      Buttons.GitHub,
-                      padding: EdgeInsets.all(20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      text: "Sign Up with Phone",
-                      onPressed: () {
-                        AuthService().signInWithPh();
-                      },
-                    )
                     // RaisedButton(
                     //   child: Text(
                     //     "CREATE NEW USER",
