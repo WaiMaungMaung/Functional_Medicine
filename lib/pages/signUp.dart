@@ -1,13 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_listview_json/main.dart';
+
 import 'package:flutter_listview_json/pages/authServices.dart';
-import 'package:flutter_listview_json/pages/bottom_nav.dart';
-import 'package:flutter_listview_json/pages/login.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:firebase_auth/firebase_auth.dart' as auth;
-import 'package:firebase_core/firebase_core.dart';
 
 class SignUpScreen extends StatefulWidget {
   static const routeName = '/';

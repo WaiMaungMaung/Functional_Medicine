@@ -5,9 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_listview_json/entities/note.dart';
 import 'package:flutter_listview_json/pages/authServices.dart';
-import 'package:flutter_listview_json/pages/bottom_nav.dart';
-import 'package:flutter_listview_json/pages/login.dart';
-import 'package:splashscreen/splashscreen.dart';
+
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -32,29 +30,29 @@ class App extends StatelessWidget {
   }
 }
 
-class Splash2 extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new SplashScreen(
-      seconds: 1,
-      navigateAfterSeconds: AuthService().handleAuth(),
-      title: new Text(
-        'Waaneiza Holistic Health\n ',
-        textScaleFactor: 2,
-        style: new TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 15.0,
-          color: Colors.green,
-        ),
-      ),
-      loadingText: Text(""),
-      image: new Image.asset('images/fm_logo_png.png'),
-      backgroundColor: Colors.white,
-      photoSize: 150.0,
-      loaderColor: Colors.green,
-    );
-  }
-}
+// // class Splash2 extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return new SplashScreen(
+//       seconds: 1,
+//       navigateAfterSeconds: AuthService().handleAuth(),
+//       title: new Text(
+//         'Waaneiza Holistic Health\n ',
+//         textScaleFactor: 2,
+//         style: new TextStyle(
+//           fontWeight: FontWeight.bold,
+//           fontSize: 15.0,
+//           color: Colors.green,
+//         ),
+//       ),
+//       loadingText: Text(""),
+//       image: new Image.asset('images/fm_logo_png.png'),
+//       backgroundColor: Colors.white,
+//       photoSize: 150.0,
+//       loaderColor: Colors.green,
+//     );
+//   }
+// }
 
 class HomePage extends StatefulWidget {
   final User user;
@@ -71,7 +69,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Note>> fetchNotes() async {
     var url =
-        'https://next.json-generator.com/api/json/get/EJLFJ4NUt'; // (sway)
+        'https://next.json-generator.com/api/json/get/Nyli27u9K'; // (sway)
     //var url=http://www.json-generator.com/api/json/get/cgoJtSmLkO?indent=2//(Word)
     var response = await http.get(url);
 

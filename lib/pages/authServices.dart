@@ -1,20 +1,19 @@
 import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_listview_json/main.dart';
 import 'package:flutter_listview_json/pages/login.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:http/http.dart' as http;
 
 class AuthService {
   FacebookLogin facebookLogin = FacebookLogin();
-  String _email, _password, verificationid;
+  String verificationid;
   String error = '';
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   handleAuth() {
     return StreamBuilder(
@@ -38,7 +37,7 @@ class AuthService {
     final result = await facebookLogin.logIn(['email']);
     final token = result.accessToken.token;
     final graphResponse = await http.get(
-        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=${token}');
+        'https://graph.facebook.com/v2.12/me?fields=name,first_name,last_name,email&access_token=$token');
 
     print(graphResponse.body);
     if (result.status == FacebookLoginStatus.loggedIn) {

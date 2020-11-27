@@ -37,7 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
       try {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: _email, password: _password);
-        User user = FirebaseAuth.instance.currentUser;
       } catch (e) {
         print(e.code);
         setState(() {
@@ -163,31 +162,31 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 20,
                     ),
 
-                    SignInButton(
-                      Buttons.FacebookNew,
-                      padding: EdgeInsets.all(20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      text: "Sign Up with Facebook",
-                      onPressed: () async {
-                        AuthService().signInWithFacebook();
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SignInButton(
-                      Buttons.GitHub,
-                      padding: EdgeInsets.all(20),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                      ),
-                      text: "Sign Up with Phone",
-                      onPressed: () {
-                        AuthService().signInWithPh();
-                      },
-                    )
+                    // SignInButton(
+                    //   Buttons.FacebookNew,
+                    //   padding: EdgeInsets.all(20),
+                    //   shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(15.0),
+                    //   ),
+                    //   text: "Sign Up with Facebook",
+                    //   onPressed: () async {
+                    //     AuthService().signInWithFacebook();
+                    //   },
+                    // ),
+                    // SizedBox(
+                    //   height: 20,
+                    // ),
+                    // SignInButton(
+                    //   Buttons.GitHub,
+                    //   padding: EdgeInsets.all(20),
+                    //   shape: RoundedRectangleBorder(
+                    //     borderRadius: BorderRadius.circular(15.0),
+                    //   ),
+                    //   text: "Sign Up with Phone",
+                    //   onPressed: () {
+                    //     AuthService().signInWithPh();
+                    //   },
+                    // )
                     // RaisedButton(
                     //   child: Text(
                     //     "CREATE NEW USER",

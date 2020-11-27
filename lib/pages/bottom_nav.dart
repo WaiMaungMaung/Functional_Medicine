@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_listview_json/entities/note.dart';
-import 'package:flutter_listview_json/main.dart';
 
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -127,10 +126,8 @@ class _BottomNavState extends State<BottomNav> {
 // }
 
 class WebViewLoadUI extends StatelessWidget {
-  String url;
-  WebViewLoadUI(url) {
-    this.url = url;
-  }
+  final url;
+  WebViewLoadUI(this.url);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
